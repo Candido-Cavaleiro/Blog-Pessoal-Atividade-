@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @RestController
 @RequestMapping("/usuarios")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -30,6 +31,13 @@ public class UsuarioController {
 
 	@PostMapping("/cadastrar")
 	public ResponseEntity<Usuario> Post(@RequestBody Usuario usuario) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.CadastrarUsuario(usuario)); 
+		Optional<Usuario> user = Optional.of(usuarioService.CadastrarUsuario(usuario));
+		try{
+			return ResponseEntity.ok(user.get());
+		}	catch (Exception e){
+		
+		return ResponseEntity.badRequest().build();
+		
+	}
 	}
 }
